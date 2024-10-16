@@ -18,6 +18,7 @@ def test_login_process(page: Page):
     expect(page.get_by_placeholder("Username")).to_be_visible()
     expect(page.get_by_placeholder("Password")).to_be_visible()
     expect(page.get_by_role("button", name="Login")).to_be_visible()
+    expect(page.get_by_text("Forgot your password?")).to_be_visible()
 
     #Login Process
     page.get_by_placeholder("Username").click()
@@ -58,3 +59,19 @@ def test_blank_field(page: Page):
     #Check required message
     expect(page.get_by_text("UsernameRequired")).to_be_visible()
     expect(page.get_by_text("PasswordRequired")).to_be_visible()
+
+def test_forgot_pass_process(page: Page):
+    page.get_by_text("Forgot your password?").click()
+
+    #Check Forgot Password Page's Attribute
+    expect(page.get_by_role("button", name="Cancel")).to_be_visible()
+    expect(page.get_by_role("button", name="Reset Password")).to_be_visible()
+    expect(page.get_by_placeholder("Username")).to_be_visible()
+
+    #Forgot Password Process
+    page.get_by_placeholder("Username").click()
+    page.get_by_placeholder("Username").fill("Admin")
+    page.get_by_role("button", name="Reset Password").click()
+    
+    #Check user successfully reset their password
+    expect(page.get_by_text("Reset Password link sent successfullyA reset password link has been sent to you")).to_be_visible()
